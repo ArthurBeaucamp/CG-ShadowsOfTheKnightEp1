@@ -17,56 +17,70 @@ var heightBuild = H;
 var batmanX = X0;
 var batmanY = Y0;
 
+var resultX = [0, 0];
+var resultY = [0, 0];
+
 // game loop
 while (true) {
     const bombDir = readline(); // the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
 
     switch (bombDir) {
       case 'UR':
-        batmanY -= jumpBuilding(heightBuild);
-        batmanX += jumpBuilding(widthBuild);
+        resultY = [batmanY, 0];
+        heightBuild = batmanY;
+        resultX = [batmanX, widthBuild];
         break;
 
       case 'DR':
-        batmanX += jumpBuilding(widthBuild);
-        batmanY += jumpBuilding(heightBuild);
+        resultY = [batmanY, heightBuild];
+        resultX = [batmanX, widthBuild];
         break;
 
       case 'DL':
-        batmanX -= jumpBuilding(widthBuild);
-        batmanY += jumpBuilding(heightBuild);
+        resultY = [batmanY, heightBuild];
+        resultX = [batmanX, 0];
+        widthBuild = batmanX;
         break;
 
       case 'UL':
-        batmanX -= jumpBuilding(widthBuild);
-        batmanY -= jumpBuilding(heightBuild);
+        resultY = [batmanY, 0];
+        heightBuild = batmanY;
+        resultX = [batmanX, 0];
+        widthBuild = batmanX;
         break;
 
       case 'U':
-        batmanY -= jumpBuilding(heightBuild);
+        resultY = [batmanY, 0];
+        heightBuild = batmanY;
         break;
 
       case 'D':
-        batmanY += jumpBuilding(heightBuild);
+        resultY = [batmanY, heightBuild];
         break;
 
       case 'R':
-        batmanX += jumpBuilding(widthBuild);
+        resultX = [batmanX, widthBuild];
         break;
 
       case 'L':
-        batmanX -= jumpBuilding(widthBuild);
+        resultX = [batmanX, 0];
+        widthBuild = batmanX;
         break;
       default:
     }
 
-    widthBuild = Math.ceil(widthBuild / 2);
-    heightBuild = Math.ceil(heightBuild / 2);
+    batmanX = Math.ceil((resultX[0] + resultX[1]) / 2);
+    batmanY = Math.ceil((resultY[0] + resultY[1]) / 2);
+
+    printErr(batmanX + ' ' + bombDir);
+
+    if (batmanX === 1 && (bombDir === 'L' || bombDir === 'UL' || bombDir === 'DL')) {
+      batmanX = 0;
+    }
+    if (batmanY === 1 && (bombDir === 'U' || bombDir === 'UL' || bombDir === 'UR')) {
+      batmanY = 0;
+    }
 
     // the location of the next window Batman should jump to.
     print(batmanX + ' ' + batmanY);
-}
-
-function jumpBuilding(jumpValue) {
-  return Math.ceil(jumpValue / 2) - 1;
 }
