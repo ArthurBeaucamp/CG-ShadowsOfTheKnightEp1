@@ -20,6 +20,8 @@ var batmanY = Y0;
 var resultX = [0, 0];
 var resultY = [0, 0];
 
+var turn = 0;
+
 // game loop
 while (true) {
     const bombDir = readline(); // the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
@@ -69,18 +71,28 @@ while (true) {
       default:
     }
 
-    batmanX = Math.ceil((resultX[0] + resultX[1]) / 2);
-    batmanY = Math.ceil((resultY[0] + resultY[1]) / 2);
-
-    printErr(batmanX + ' ' + bombDir);
-
-    if (batmanX === 1 && (bombDir === 'L' || bombDir === 'UL' || bombDir === 'DL')) {
+    // Special traitment for windows 0
+    if (batmanX === 0 && turn !== 0) {
       batmanX = 0;
     }
-    if (batmanY === 1 && (bombDir === 'U' || bombDir === 'UL' || bombDir === 'UR')) {
-      batmanY = 0;
+    else if (batmanX === 1 && (bombDir === 'L' || bombDir === 'UL' || bombDir === 'DL')) {
+      batmanX = 0;
+    } else {
+      batmanX = Math.ceil((resultX[0] + resultX[1]) / 2);
     }
 
+    if (batmanY === 0 && turn !== 0) {
+      batmanY = 0;
+    }
+    else if (batmanY === 1 && (bombDir === 'U' || bombDir === 'UL' || bombDir === 'UR')) {
+      batmanY = 0;
+    } else {
+      batmanY = Math.ceil((resultY[0] + resultY[1]) / 2);
+    }
+
+    printErr(batmanX + ' ' +bombDir);
+
     // the location of the next window Batman should jump to.
+    turn ++;
     print(batmanX + ' ' + batmanY);
 }
