@@ -1,12 +1,7 @@
-#Coding game challenge
+# Coding game challenge
 
-Shadows of the Knight - Ep 1
+## Shadows of the Knight - Ep 1
 
-## First test
-test: 1 -> 5 Done
-
-## Add table
-test: 1 -> 5 Done
-
-## windows 0
-Traitment for windows 0 but always test: 1 -> 5 Done
+- Init position and building size
+- Update search area with batmanX / batmanY and resultX / resultY
+- Calculating the average for try a new position

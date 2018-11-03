@@ -17,82 +17,60 @@ var heightBuild = H;
 var batmanX = X0;
 var batmanY = Y0;
 
-var resultX = [0, 0];
-var resultY = [0, 0];
-
-var turn = 0;
+// Init table search
+var resultX = [-1, widthBuild];
+var resultY = [-1, heightBuild];
 
 // game loop
 while (true) {
     const bombDir = readline(); // the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
 
     switch (bombDir) {
-      case 'UR':
-        resultY = [batmanY, 0];
-        heightBuild = batmanY;
-        resultX = [batmanX, widthBuild];
-        break;
-
-      case 'DR':
-        resultY = [batmanY, heightBuild];
-        resultX = [batmanX, widthBuild];
-        break;
-
-      case 'DL':
-        resultY = [batmanY, heightBuild];
-        resultX = [batmanX, 0];
-        widthBuild = batmanX;
-        break;
-
-      case 'UL':
-        resultY = [batmanY, 0];
-        heightBuild = batmanY;
-        resultX = [batmanX, 0];
-        widthBuild = batmanX;
-        break;
-
       case 'U':
-        resultY = [batmanY, 0];
-        heightBuild = batmanY;
+        resultX = [batmanX, batmanX];
+        resultY = [resultY[0], batmanY];
         break;
 
       case 'D':
-        resultY = [batmanY, heightBuild];
-        break;
-
-      case 'R':
-        resultX = [batmanX, widthBuild];
+        resultX = [batmanX, batmanX];
+        resultY = [batmanY, resultY[1]];
         break;
 
       case 'L':
-        resultX = [batmanX, 0];
-        widthBuild = batmanX;
+        resultX = [resultX[0], batmanX];
+        resultY = [batmanY, batmanY];
+        break;
+
+      case 'R':
+        resultX = [batmanX, resultX[1]];
+        resultY = [batmanY, batmanY];
+        break;
+
+      case 'UL':
+        resultX = [resultX[0], batmanX];
+        resultY = [resultY[0], batmanY];
+        break;
+
+      case 'UR':
+        resultX = [batmanX, resultX[1]];
+        resultY = [resultY[0], batmanY];
+        break;
+
+      case 'DL':
+        resultX = [resultX[0], batmanX];
+        resultY = [batmanY, resultY[1]];
+        break;
+
+      case 'DR':
+        resultX = [batmanX, resultX[1]];
+        resultY = [batmanY, resultY[1]];
         break;
       default:
     }
 
-    // Special traitment for windows 0
-    if (batmanX === 0 && turn !== 0) {
-      batmanX = 0;
-    }
-    else if (batmanX === 1 && (bombDir === 'L' || bombDir === 'UL' || bombDir === 'DL')) {
-      batmanX = 0;
-    } else {
-      batmanX = Math.ceil((resultX[0] + resultX[1]) / 2);
-    }
-
-    if (batmanY === 0 && turn !== 0) {
-      batmanY = 0;
-    }
-    else if (batmanY === 1 && (bombDir === 'U' || bombDir === 'UL' || bombDir === 'UR')) {
-      batmanY = 0;
-    } else {
-      batmanY = Math.ceil((resultY[0] + resultY[1]) / 2);
-    }
-
-    printErr(batmanX + ' ' +bombDir);
+    batmanX = Math.ceil((resultX[0] + resultX[1]) / 2);
+    batmanY = Math.ceil((resultY[0] + resultY[1]) / 2);
 
     // the location of the next window Batman should jump to.
-    turn ++;
     print(batmanX + ' ' + batmanY);
 }
